@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خارطة طريق لتعلم علم البيانات (للاستخدام دون اتصال)</title>
+    
+    <!--
+    تعليمات هامة للاستخدام دون اتصال بالإنترنت الكامل (بما في ذلك تحميل PDF المباشر):
+    1.  لجعل زر "تحميل مباشر كـ PDF" يعمل دون اتصال بالإنترنت، يجب عليك تحميل ملفات مكتبتي jsPDF و html2canvas.
+    2.  قم بتحميل الملفات من الروابط التالية:
+        - jsPDF: https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
+        - html2canvas: https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js
+    3.  احفظ هذين الملفين (jspdf.umd.min.js و html2canvas.min.js) في نفس المجلد الذي يوجد به ملف HTML هذا.
+    4.  بعد ذلك، قم بتعديل سطور <script src="..."> أدناه التي تشير إلى هذه المكتبات.
+        بدلاً من:
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        اجعلها:
+        <script src="jspdf.umd.min.js"></script>
+        <script src="html2canvas.min.js"></script>
+    5.  إذا لم تقم بهذه الخطوات، فإن عرض الصفحة والأقسام القابلة للطي سيعمل دون اتصال،
+        ولكن زر "تحميل مباشر كـ PDF" سيتطلب اتصالاً بالإنترنت أو قد لا يعمل.
+        زر "طباعة / حفظ كـ PDF (عبر المتصفح)" سيعمل دائماً دون اتصال.
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* أنماط CSS أساسية مدمجة للعمل دون اتصال */
+        body {
+            font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #005a9c; /* أزرق داكن */
+            margin-bottom: 15px; /* تقليل المسافة السفلية قليلاً */
+            font-size: 2em;
+        }
+        /* تصميم اسم المطور */
+        .developer-name {
+            text-align: center;
+            font-size: 1.3em; /* حجم خط أكبر قليلاً */
+            color: #007bff; /* لون أزرق مميز */
+            margin-bottom: 30px; /* مسافة سفلية قبل أول قسم */
+            font-weight: bold;
+            letter-spacing: 1px; /* تباعد خفيف بين الحروف */
+            position: relative; /* لإنشاء تأثيرات إذا أردنا */
+            padding: 5px 0;
+        }
+        .developer-name span {
+            background: linear-gradient(45deg, #007bff, #00c6ff); /* تدرج لوني جذاب */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .developer-name::before, .developer-name::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 2px;
+            background: linear-gradient(to right, transparent, #007bff, transparent);
+            width: 0;
+            transition: width 0.4s ease-in-out;
+        }
+        .developer-name::before {
+            top: -5px;
+        }
+        .developer-name::after {
+            bottom: -5px;
+        }
+        .container:hover .developer-name::before,
+        .container:hover .developer-name::after {
+            width: 200px; /* عرض الخط عند المرور فوق الحاوية */
+        }
+
+        .section {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .section-title-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            background-color: #007bff; /* أزرق */
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.25em;
+            font-weight: bold;
+            text-align: right;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .section-title-button:hover {
+            background-color: #0056b3; /* أزرق أغمق عند المرور */
+        }
+        .arrow-icon {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease-in-out;
+            fill: currentColor; /* لتلوين SVG بنفس لون النص (الأبيض هنا) */
+        }
+        .arrow-icon.rotated {
+            transform: rotate(-90deg);
+        }
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out, margin-top 0.5s ease-out;
+            background-color: #f9f9f9;
+            border-radius: 0 0 6px 6px;
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+        .section-content.open {
+            max-height: 2500px; /* قيمة كبيرة كافية لإظهار المحتوى */
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-top: 5px; /* مسافة صغيرة بين العنوان والمحتوى عند الفتح */
+        }
+        .section-content ul {
+            list-style: none;
+            padding-right: 0;
+            margin:0;
+        }
+        .section-content ul li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            padding-right: 10px; /* حشوة لعلامة الصح */
+        }
+        .section-content ul li::before {
+            content: "✔️"; /* علامة الصح */
+            color: #28a745; /* أخضر */
+            font-weight: bold;
+            padding-left: 8px; /* مسافة بين العلامة والنص */
+            flex-shrink: 0;
+        }
+        .list-item-text {
+            flex-grow: 1;
+        }
+        .detailed-explanation {
+            padding-right: 28px; /* محاذاة مع النص الرئيسي بعد علامة ✔️ */
+            margin-top: 5px;
+            color: #555;
+            font-size: 0.95em;
+        }
+        .detailed-explanation strong {
+            color: #333;
+        }
+        .action-button {
+            display: block;
+            width: fit-content;
+            margin: 25px auto 10px auto;
+            padding: 12px 25px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .action-button:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        #download-pdf-button {
+            background-color: #28a745; /* أخضر */
+        }
+        #download-pdf-button:hover {
+            background-color: #218838; /* أخضر أغمق */
+        }
+        #print-button {
+            background-color: #17a2b8; /* سماوي */
+        }
+        #print-button:hover {
+            background-color: #138496; /* سماوي أغمق */
+        }
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+        /* أنماط للطباعة */
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+                margin: 0;
+            }
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 10px;
+                max-width: 100%;
+            }
+            .action-button, .no-print, .developer-name::before, .developer-name::after { /* إخفاء خطوط اسم المطور عند الطباعة */
+                display: none !important;
+            }
+            .developer-name span { /* ضمان ظهور لون النص المطور عند الطباعة */
+                background: none !important;
+                -webkit-text-fill-color: #007bff !important;
+                text-fill-color: #007bff !important;
+                color: #007bff !important;
+            }
+            .section-title-button {
+                background-color: #007bff !important; /* ضمان لون للخلفية في الطباعة */
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .arrow-icon { display: none !important; }
+            .section-content {
+                max-height: none !important; /* إظهار كل المحتوى عند الطباعة */
+                overflow: visible !important;
+                background-color: #f9f9f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                padding-top: 15px !important;
+                padding-bottom: 15px !important;
+                margin-top: 5px !important;
+            }
+            h1 { font-size: 1.8em; }
+            .developer-name { font-size: 1.1em; margin-bottom: 20px; }
+            .section-title-button { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay" class="hidden">
+        <p>جاري إنشاء ملف PDF، يرجى الانتظار قليلاً...<br><small>(إذا لم تقم بتحميل المكتبات محلياً، قد تفشل هذه العملية دون اتصال بالإنترنت)</small></p>
+    </div>
+
+    <div id="pdf-content-area" class="container">
+        <h1>خارطة طريق لتعلم علم البيانات (تفاعلية)</h1>
+        <div class="developer-name">
+            <span>المطور: صابر سعيد</span>
+        </div>
+
+        <div class="section">
+            <button aria-expanded="false" class="section-title-button">
+                <span>المرحلة 0: المتطلبات الأساسية</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </button>
+            <div class="section-content">
+                <ul>
+                    <li>
+                        <span class="list-item-text font-semibold">تعلم لغة برمجة (Python أو R):</span>
+                        <p class="detailed-explanation">
+                            <strong>Python:</strong> اللغة الأكثر شعبية وسهولة مع مكتبات قوية.
+                            <br>
+                            <strong>R:</strong> مصممة للإحصاء وتحليل البيانات، ممتازة في التصور.
+                        </p>
+                    </li>
+                    <li>
+                        <span class="list-item-text font-semibold">فهم الرياضيات الأساسية:</span>
+                        <p class="detailed-explanation">
+                            <strong>الجبر الخطي:</strong> لفهم خوارزميات تعلم الآلة.
+                            <br>
+                            <strong>الإحصاء والاحتمالات:</strong> حجر الزاوية في علم البيانات.
+                            <br>
+                            <strong>حساب التفاضل والتكامل:</strong> لتحسين النماذج.
+                        </p>
+                    </li>
+                    <li>
+                        <span class="list-item-text font-semibold">الأدوات الأساسية:</span>
+                        <p class="detailed-explanation">
+                            <strong>Jupyter Notebooks/Lab:</strong> بيئة تفاعلية للاستكشاف.
+                            <br>
+                            <strong>VS Code:</strong> محرر كود قوي للمشاريع.
+                            <br>
+                            <strong>Anaconda:</strong> لإدارة البيئات والحزم بسهولة.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <button aria-expanded="false" class="section-title-button">
+                <span>المرحلة 1: معالجة وتحليل البيانات الاستكشافي (EDA)</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </button>
+            <div class="section-content">
+                 <ul>
+                    <li>
+                        <span class="list-item-text font-semibold">التعامل مع مكتبات معالجة البيانات:</span>
+                        <p class="detailed-explanation">
+                            <strong>Pandas:</strong> للبيانات الجدولية. <strong>NumPy:</strong> للعمليات العددية.
+                        </p>
+                    </li>
+                    <li>
+                        <span class="list-item-text font-semibold">تنظيف البيانات (Data Cleaning):</span>
+                        <p class="detailed-explanation">
+                            معالجة القيم المفقودة، المكررة، الشاذة، وتصحيح الأخطاء.
+                        </p>
+                    </li>
+                    <li>
+                        <span class="list-item-text font-semibold">التحليل الاستكشافي للبيانات (EDA):</span>
+                         <p class="detailed-explanation">
+                            استخدام الإحصاءات والتصورات لفهم البيانات واكتشاف الأنماط.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <button aria-expanded="false" class="section-title-button">
+                <span>المرحلة 2: تصور البيانات (Data Visualization)</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </button>
+            <div class="section-content">
+                <ul>
+                    <li>
+                        <span class="list-item-text font-semibold">أهمية تصور البيانات:</span>
+                        <p class="detailed-explanation">
+                           تحويل البيانات المعقدة لرسوم سهلة الفهم.
+                        </p>
+                    </li>
+                    <li>
+                        <span class="list-item-text font-semibold">تعلم مكتبات التصور البياني:</span>
+                        <p class="detailed-explanation">
+                            <strong>Matplotlib, Seaborn, Plotly (Python), ggplot2 (R).</strong>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <button aria-expanded="false" class="section-title-button">
+                <span>المرحلة 3: الإحصاء التطبيقي وبناء النماذج</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </button>
+            <div class="section-content">
+                <ul>
+                    <li><span class="list-item-text font-semibold">اختبار الفرضيات</span><p class="detailed-explanation">اتخاذ قرارات بناءً على البيانات.</p></li>
+                    <li><span class="list-item-text font-semibold">تحليل الانحدار</span><p class="detailed-explanation">فهم العلاقات والتنبؤ.</p></li>
+                    <li><span class="list-item-text font-semibold">تحليل الارتباط</span><p class="detailed-explanation">قياس قوة واتجاه العلاقة الخطية.</p></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <button aria-expanded="false" class="section-title-button">
+                <span>المرحلة 4: تعلم الآلة (Machine Learning)</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </button>
+            <div class="section-content">
+                <ul>
+                    <li><span class="list-item-text font-semibold">التعلم المراقب</span><p class="detailed-explanation">تدريب النموذج على بيانات مُصنّفة (الانحدار، التصنيف).</p></li>
+                    <li><span class="list-item-text font-semibold">التعلم غير المراقب</span><p class="detailed-explanation">اكتشاف الأنماط في بيانات غير مُصنّفة (التجميع، تقليل الأبعاد).</p></li>
+                    <li><span class="list-item-text font-semibold">أدوات ومكتبات</span><p class="detailed-explanation">Scikit-learn, TensorFlow, Keras, PyTorch.</p></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <button aria-expanded="false" class="section-title-button">
+                <span>المرحلة 5: المشاريع العملية وتكوين ملف أعمال (Portfolio)</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </button>
+            <div class="section-content">
+                <ul>
+                    <li><span class="list-item-text font-semibold">أهمية المشاريع</span><p class="detailed-explanation">تطبيق المعرفة واكتساب الخبرة.</p></li>
+                    <li><span class="list-item-text font-semibold">منصات للمشاركة</span><p class="detailed-explanation">Kaggle للمسابقات، GitHub لمشاركة الكود وبناء ملف أعمال.</p></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <button aria-expanded="false" class="section-title-button">
+                <span>المرحلة 6: التخصص والتعلم المستمر</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </button>
+            <div class="section-content">
+                <ul>
+                    <li><span class="list-item-text font-semibold">اختيار مجال للتخصص</span><p class="detailed-explanation">مثل التعلم العميق، معالجة اللغات، هندسة البيانات.</p></li>
+                    <li><span class="list-item-text font-semibold">التعلم المستمر</span><p class="detailed-explanation">مواكبة التطورات في مجال علم البيانات.</p></li>
+                </ul>
+            </div>
+        </div>
+        
+        <button id="download-pdf-button" class="action-button">
+            📥 تحميل مباشر كـ PDF (يتطلب إعداد المكتبات محلياً للعمل دون اتصال)
+        </button>
+        <button id="print-button" class="action-button no-print" onclick="window.print()">
+            🖨️ طباعة / حفظ كـ PDF (عبر المتصفح - يعمل دون اتصال)
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sectionToggles = document.querySelectorAll('.section-title-button');
+
+            sectionToggles.forEach(toggle => {
+                toggle.addEventListener('click', function () {
+                    const content = this.nextElementSibling;
+                    const arrow = this.querySelector('.arrow-icon');
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    content.classList.toggle('open');
+                    arrow.classList.toggle('rotated');
+                });
+            });
+
+            const downloadButton = document.getElementById('download-pdf-button');
+            const pdfContentArea = document.getElementById('pdf-content-area');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            downloadButton.addEventListener('click', async function () {
+                // التحقق من توفر المكتبات
+                if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                    // لا تستخدم alert هنا، بل أظهر رسالة مخصصة إذا أردت
+                    console.error("مكتبات إنشاء PDF (jsPDF أو html2canvas) غير متوفرة.");
+                    loadingOverlay.classList.add('hidden'); // إخفاء التراكب إذا كان ظاهرًا
+                    // يمكنك إضافة رسالة خطأ مخصصة تظهر في الصفحة بدلاً من alert
+                    const errorMsg = document.createElement('p');
+                    errorMsg.textContent = "خطأ: مكتبات إنشاء PDF غير محملة. يرجى اتباع التعليمات في بداية الكود لتحميلها محلياً أو التأكد من اتصالك بالإنترنت.";
+                    errorMsg.style.color = 'red';
+                    errorMsg.style.textAlign = 'center';
+                    errorMsg.style.padding = '10px';
+                    pdfContentArea.insertBefore(errorMsg, downloadButton); // عرض الرسالة قبل زر التحميل
+                    setTimeout(() => errorMsg.remove(), 7000); // إزالة الرسالة بعد فترة
+                    return;
+                }
+
+                loadingOverlay.classList.remove('hidden');
+                
+                const originalStates = [];
+                sectionToggles.forEach((toggle, index) => {
+                    originalStates[index] = toggle.getAttribute('aria-expanded') === 'true';
+                    if (!originalStates[index]) {
+                        toggle.nextElementSibling.classList.add('open');
+                        // لا نغير aria-expanded أو السهم هنا لأنه مؤقت
+                    }
+                });
+                
+                // انتظار بسيط لانتهاء الأنيميشن إذا كان هناك أي تأثيرات
+                await new Promise(resolve => setTimeout(resolve, 600)); 
+
+
+                try {
+                    const { jsPDF } = window.jspdf; // التأكد من استخدام jsPDF من النطاق العام
+                    const canvas = await html2canvas(pdfContentArea, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        ignoreElements: (element) => {
+                            return element.id === 'download-pdf-button' || element.id === 'print-button' || element.classList.contains('no-print') || element.id === 'loading-overlay';
+                        }
+                    });
+
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'pt',
+                        format: 'a4'
+                    });
+
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth() - 40; // ترك هوامش 20pt من كل جانب
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    
+                    let heightLeft = pdfHeight;
+                    let position = 20; // بدء المحتوى بعد هامش علوي 20pt
+                    const pageHeight = pdf.internal.pageSize.getHeight() - 40; // ارتفاع الصفحة الفعلي مع الهوامش
+
+                    pdf.addImage(imgData, 'PNG', 20, position, pdfWidth, pdfHeight); // 20 هو الهامش الأيسر
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft > 0) { 
+                        position = heightLeft - pdfHeight + 20; 
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 20, position, pdfWidth, pdfHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    pdf.save('خارطة-طريق-علم-البيانات-بواسطة-صابر-سعيد.pdf');
+
+                } catch (error) {
+                    console.error("خطأ أثناء إنشاء PDF:", error);
+                    // يمكنك إضافة رسالة خطأ مخصصة تظهر في الصفحة بدلاً من alert
+                    const errorMsgPdf = document.createElement('p');
+                    errorMsgPdf.textContent = "حدث خطأ أثناء إنشاء ملف PDF. التفاصيل في الكونسول.";
+                    errorMsgPdf.style.color = 'red';
+                    errorMsgPdf.style.textAlign = 'center';
+                    errorMsgPdf.style.padding = '10px';
+                    pdfContentArea.insertBefore(errorMsgPdf, downloadButton);
+                    setTimeout(() => errorMsgPdf.remove(), 7000);
+                } finally {
+                     sectionToggles.forEach((toggle, index) => {
+                        if (!originalStates[index]) { // إذا كان مغلقاً في الأصل
+                            toggle.nextElementSibling.classList.remove('open');
+                        }
+                    });
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
