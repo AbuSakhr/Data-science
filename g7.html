@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+                toggle.addEventListener('click', function () {
+                    const content = this.nextElementSibling;
+                    const arrow = this.querySelector('.arrow-icon');
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    content.classList.toggle('open');
+                    arrow.classList.toggle('rotated');
+                });
+            });
+
+            const downloadButton = document.getElementById('download-pdf-button');
+            const pdfContentArea = document.getElementById('pdf-content-area');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            downloadButton.addEventListener('click', async function () {
+                // التحقق من توفر المكتبات
+                if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                    // لا تستخدم alert هنا، بل أظهر رسالة مخصصة إذا أردت
+                    console.error("مكتبات إنشاء PDF (jsPDF أو html2canvas) غير متوفرة.");
+                    loadingOverlay.classList.add('hidden'); // إخفاء التراكب إذا كان ظاهرًا
+                    // يمكنك إضافة رسالة خطأ مخصصة تظهر في الصفحة بدلاً من alert
+                    const errorMsg = document.createElement('p');
+                    errorMsg.textContent = "خطأ: مكتبات إنشاء PDF غير محملة. يرجى اتباع التعليمات في بداية الكود لتحميلها محلياً أو التأكد من اتصالك بالإنترنت.";
+                    errorMsg.style.color = 'red';
+                    errorMsg.style.textAlign = 'center';
+                    errorMsg.style.padding = '10px';
+                    pdfContentArea.insertBefore(errorMsg, downloadButton); // عرض الرسالة قبل زر التحميل
+                    setTimeout(() => errorMsg.remove(), 7000); // إزالة الرسالة بعد فترة
+                    return;
+                }
+
+                loadingOverlay.classList.remove('hidden');
+                
+                const originalStates = [];
+                sectionToggles.forEach((toggle, index) => {
+                    originalStates[index] = toggle.getAttribute('aria-expanded') === 'true';
+                    if (!originalStates[index]) {
+                        toggle.nextElementSibling.classList.add('open');
+                        // لا نغير aria-expanded أو السهم هنا لأنه مؤقت
+                    }
+                });
+                
+                // انتظار بسيط لانتهاء الأنيميشن إذا كان هناك أي تأثيرات
+                await new Promise(resolve => setTimeout(resolve, 600)); 
+
+
+                try {
+                    const { jsPDF } = window.jspdf; // التأكد من استخدام jsPDF من النطاق العام
+                    const canvas = await html2canvas(pdfContentArea, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        ignoreElements: (element) => {
+                            return element.id === 'download-pdf-button' || element.id === 'print-button' || element.classList.contains('no-print') || element.id === 'loading-overlay';
+                        }
+                    });
+
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'pt',
+                        format: 'a4'
+                    });
+
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth() - 40; // ترك هوامش 20pt من كل جانب
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    
+                    let heightLeft = pdfHeight;
+                    let position = 20; // بدء المحتوى بعد هامش علوي 20pt
+                    const pageHeight = pdf.internal.pageSize.getHeight() - 40; // ارتفاع الصفحة الفعلي مع الهوامش
+
+                    pdf.addImage(imgData, 'PNG', 20, position, pdfWidth, pdfHeight); // 20 هو الهامش الأيسر
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft > 0) { 
+                        position = heightLeft - pdfHeight + 20; 
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 20, position, pdfWidth, pdfHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    pdf.save('خارطة-طريق-علم-البيانات-بواسطة-صابر-سعيد.pdf');
+
+                } catch (error) {
+                    console.error("خطأ أثناء إنشاء PDF:", error);
+                    // يمكنك إضافة رسالة خطأ مخصصة تظهر في الصفحة بدلاً من alert
+                    const errorMsgPdf = document.createElement('p');
+                    errorMsgPdf.textContent = "حدث خطأ أثناء إنشاء ملف PDF. التفاصيل في الكونسول.";
+                    errorMsgPdf.style.color = 'red';
+                    errorMsgPdf.style.textAlign = 'center';
+                    errorMsgPdf.style.padding = '10px';
+                    pdfContentArea.insertBefore(errorMsgPdf, downloadButton);
+                    setTimeout(() => errorMsgPdf.remove(), 7000);
+                } finally {
+                     sectionToggles.forEach((toggle, index) => {
+                        if (!originalStates[index]) { // إذا كان مغلقاً في الأصل
+                            toggle.nextElementSibling.classList.remove('open');
+                        }
+                    });
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
