@@ -3,541 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خارطة طريق لتعلم علم البيانات (للاستخدام دون اتصال)</title>
-    
-    <!--
-    تعليمات هامة للاستخدام دون اتصال بالإنترنت الكامل (بما في ذلك تحميل PDF المباشر):
-    1.  لجعل زر "تحميل مباشر كـ PDF" يعمل دون اتصال بالإنترنت، يجب عليك تحميل ملفات مكتبتي jsPDF و html2canvas.
-    2.  قم بتحميل الملفات من الروابط التالية:
-        - jsPDF: https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
-        - html2canvas: https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js
-    3.  احفظ هذين الملفين (jspdf.umd.min.js و html2canvas.min.js) في نفس المجلد الذي يوجد به ملف HTML هذا.
-    4.  بعد ذلك، قم بتعديل سطور <script src="..."> أدناه التي تشير إلى هذه المكتبات.
-        بدلاً من:
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-        اجعلها:
-        <script src="jspdf.umd.min.js"></script>
-        <script src="html2canvas.min.js"></script>
-    5.  إذا لم تقم بهذه الخطوات، فإن عرض الصفحة والأقسام القابلة للطي سيعمل دون اتصال،
-        ولكن زر "تحميل مباشر كـ PDF" سيتطلب اتصالاً بالإنترنت أو قد لا يعمل.
-        زر "طباعة / حفظ كـ PDF (عبر المتصفح)" سيعمل دائماً دون اتصال.
-    -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
+    <title>المكتبة الرقمية الفاخرة - روابط مرقمة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* أنماط CSS أساسية مدمجة للعمل دون اتصال */
         body {
-            font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+            font-family: 'Tajawal', sans-serif;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            padding: 20px;
+        body::-webkit-scrollbar { /* WebKit */
+            display: none;
         }
-        h1 {
-            text-align: center;
-            color: #005a9c; /* أزرق داكن */
-            margin-bottom: 15px; /* تقليل المسافة السفلية قليلاً */
-            font-size: 2em;
-        }
-        /* تصميم اسم المطور */
-        .developer-name {
-            text-align: center;
-            font-size: 1.3em; /* حجم خط أكبر قليلاً */
-            color: #007bff; /* لون أزرق مميز */
-            margin-bottom: 30px; /* مسافة سفلية قبل أول قسم */
-            font-weight: bold;
-            letter-spacing: 1px; /* تباعد خفيف بين الحروف */
-            position: relative; /* لإنشاء تأثيرات إذا أردنا */
-            padding: 5px 0;
-        }
-        .developer-name span {
-            background: linear-gradient(45deg, #007bff, #00c6ff); /* تدرج لوني جذاب */
+
+        .hero-title {
+            background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        .developer-name::before, .developer-name::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 2px;
-            background: linear-gradient(to right, transparent, #007bff, transparent);
-            width: 0;
-            transition: width 0.4s ease-in-out;
-        }
-        .developer-name::before {
-            top: -5px;
-        }
-        .developer-name::after {
-            bottom: -5px;
-        }
-        .container:hover .developer-name::before,
-        .container:hover .developer-name::after {
-            width: 200px; /* عرض الخط عند المرور فوق الحاوية */
+            filter: drop-shadow(0 2px 8px rgba(102, 166, 255, 0.7));
         }
 
-        .section {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 20px;
-        }
-        .section:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .section-title-button {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            background-color: #007bff; /* أزرق */
-            color: white;
-            padding: 12px 18px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.25em;
-            font-weight: bold;
-            text-align: right;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .section-title-button:hover {
-            background-color: #0056b3; /* أزرق أغمق عند المرور */
-        }
-        .arrow-icon {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.3s ease-in-out;
-            fill: currentColor; /* لتلوين SVG بنفس لون النص (الأبيض هنا) */
-        }
-        .arrow-icon.rotated {
-            transform: rotate(-90deg);
-        }
-        .section-content {
-            max-height: 0;
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        border-color 0.4s ease;
+            position: relative;
             overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out, margin-top 0.5s ease-out;
-            background-color: #f9f9f9;
-            border-radius: 0 0 6px 6px;
-            padding-right: 20px;
-            padding-left: 20px;
         }
-        .section-content.open {
-            max-height: 2500px; /* قيمة كبيرة كافية لإظهار المحتوى */
-            padding-top: 15px;
-            padding-bottom: 15px;
-            margin-top: 5px; /* مسافة صغيرة بين العنوان والمحتوى عند الفتح */
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--hover-glow-color, rgba(137, 247, 254, 0.2)) 0%, rgba(137, 247, 254, 0) 70%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease-out;
+            z-index: 0;
+            opacity: 0;
         }
-        .section-content ul {
-            list-style: none;
-            padding-right: 0;
-            margin:0;
+        
+        .section-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.3), 0 0 30px var(--hover-border-color, rgba(102, 166, 255, 0.3));
+            border-color: var(--hover-border-color, rgba(137, 247, 254, 0.5));
         }
-        .section-content ul li {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 10px;
-            padding-right: 10px; /* حشوة لعلامة الصح */
+
+        .section-card:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
         }
-        .section-content ul li::before {
-            content: "✔️"; /* علامة الصح */
-            color: #28a745; /* أخضر */
-            font-weight: bold;
-            padding-left: 8px; /* مسافة بين العلامة والنص */
-            flex-shrink: 0;
+        
+        .section-card.sky-glow:hover { --hover-glow-color: rgba(137, 247, 254, 0.2); --hover-border-color: rgba(137, 247, 254, 0.5); }
+        .section-card.emerald-glow:hover { --hover-glow-color: rgba(52, 211, 153, 0.2); --hover-border-color: rgba(52, 211, 153, 0.5); }
+        .section-card.amber-glow:hover { --hover-glow-color: rgba(251, 191, 36, 0.2); --hover-border-color: rgba(251, 191, 36, 0.5); }
+        .section-card.rose-glow:hover { --hover-glow-color: rgba(244, 63, 94, 0.2); --hover-border-color: rgba(244, 63, 94, 0.5); }
+        .section-card.indigo-glow:hover { --hover-glow-color: rgba(129, 140, 248, 0.2); --hover-border-color: rgba(129, 140, 248, 0.5); }
+        .section-card.pink-glow:hover { --hover-glow-color: rgba(236, 72, 153, 0.2); --hover-border-color: rgba(236, 72, 153, 0.5); }
+        .section-card.teal-glow:hover { --hover-glow-color: rgba(45, 212, 191, 0.2); --hover-border-color: rgba(45, 212, 191, 0.5); }
+
+
+        .section-card > * {
+            position: relative;
+            z-index: 1;
         }
-        .list-item-text {
-            flex-grow: 1;
+
+        .icon-glow {
+            filter: drop-shadow(0 0 10px currentColor);
         }
-        .detailed-explanation {
-            padding-right: 28px; /* محاذاة مع النص الرئيسي بعد علامة ✔️ */
-            margin-top: 5px;
-            color: #555;
-            font-size: 0.95em;
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .detailed-explanation strong {
-            color: #333;
+        .animated-gradient-bg {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientAnimation 25s ease infinite;
         }
-        .action-button {
-            display: block;
-            width: fit-content;
-            margin: 25px auto 10px auto;
-            padding: 12px 25px;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+        /* Sidebar Styles */
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%); 
         }
-        .action-button:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        .sidebar.open {
+            transform: translateX(0);
         }
-        #download-pdf-button {
-            background-color: #28a745; /* أخضر */
+        .sidebar-overlay {
+            transition: opacity 0.3s ease-in-out;
         }
-        #download-pdf-button:hover {
-            background-color: #218838; /* أخضر أغمق */
+
+        /* Animated Presenter Credit Style - Very Small */
+        .presenter-name-animated {
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            background: linear-gradient(120deg, #e879f9 0%, #89f7fe 50%, #60a5fa 100%); 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 2px 5px; 
+            animation: subtleFadeInOutShine 8s ease-in-out infinite; 
+            position: relative; 
+            display: inline-block; 
         }
-        #print-button {
-            background-color: #17a2b8; /* سماوي */
-        }
-        #print-button:hover {
-            background-color: #138496; /* سماوي أغمق */
-        }
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1.5rem;
-            text-align: center;
-        }
-        .hidden {
-            display: none !important;
-        }
-        /* أنماط للطباعة */
-        @media print {
-            body {
-                background-color: #fff;
-                padding: 0;
-                margin: 0;
+
+        @keyframes subtleFadeInOutShine {
+            0%, 100% { 
+                opacity: 0;
+                transform: translateY(5px) scale(0.9); 
             }
-            .container {
-                box-shadow: none;
-                border-radius: 0;
-                padding: 10px;
-                max-width: 100%;
+            15%, 85% { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                text-shadow: 0 0 3px rgba(224, 242, 254, 0.4), 
+                             0 0 5px rgba(137, 247, 254, 0.5), 
+                             0 0 8px rgba(232, 121, 249, 0.4);
             }
-            .action-button, .no-print, .developer-name::before, .developer-name::after { /* إخفاء خطوط اسم المطور عند الطباعة */
-                display: none !important;
+            50% { 
+                opacity: 1;
+                transform: translateY(-2px) scale(1.05); 
+                text-shadow: 0 0 4px rgba(224, 242, 254, 0.5),
+                             0 0 7px rgba(137, 247, 254, 0.6),
+                             0 0 10px rgba(232, 121, 249, 0.5),
+                             0 0 12px rgba(96, 165, 250, 0.4); 
             }
-            .developer-name span { /* ضمان ظهور لون النص المطور عند الطباعة */
-                background: none !important;
-                -webkit-text-fill-color: #007bff !important;
-                text-fill-color: #007bff !important;
-                color: #007bff !important;
-            }
-            .section-title-button {
-                background-color: #007bff !important; /* ضمان لون للخلفية في الطباعة */
-                color: white !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .arrow-icon { display: none !important; }
-            .section-content {
-                max-height: none !important; /* إظهار كل المحتوى عند الطباعة */
-                overflow: visible !important;
-                background-color: #f9f9f9 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                padding-top: 15px !important;
-                padding-bottom: 15px !important;
-                margin-top: 5px !important;
-            }
-            h1 { font-size: 1.8em; }
-            .developer-name { font-size: 1.1em; margin-bottom: 20px; }
-            .section-title-button { font-size: 1.1em; }
         }
     </style>
 </head>
-<body>
-    <div id="loading-overlay" class="hidden">
-        <p>جاري إنشاء ملف PDF، يرجى الانتظار قليلاً...<br><small>(إذا لم تقم بتحميل المكتبات محلياً، قد تفشل هذه العملية دون اتصال بالإنترنت)</small></p>
+<body class="animated-gradient-bg text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 selection:bg-sky-500 selection:text-white overflow-x-hidden">
+
+    <button id="sidebarToggle" class="fixed top-6 right-6 z-50 p-2 bg-slate-700/50 hover:bg-sky-500/70 backdrop-blur-sm rounded-md text-white transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+    </button>
+
+    <aside id="sidebar" class="sidebar fixed top-0 right-0 h-full w-72 md:w-80 bg-slate-800/80 backdrop-blur-lg shadow-2xl p-6 z-[60] border-l border-slate-700">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-2xl font-bold text-sky-300">القائمة</h3>
+            <button id="sidebarClose" class="p-1 text-slate-400 hover:text-sky-300 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav>
+            <ul class="space-y-3">
+                <li><a href="index.html" class="flex items-center space-x-3 space-x-reverse p-3 rounded-lg text-slate-300 hover:bg-sky-500/20 hover:text-sky-200 transition-all duration-200 group"> <svg class="w-5 h-5 text-sky-400 group-hover:text-sky-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span>الصفحة الرئيسية</span></a></li>
+                <li><a href="g1.html" class="flex items-center space-x-3 space-x-reverse p-3 rounded-lg text-slate-300 hover:bg-sky-500/20 hover:text-sky-200 transition-all duration-200 group">
+                    <svg class="w-5 h-5 text-sky-400 group-hover:text-sky-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m0 0A8.489 8.489 0 0012 21.747M12 17.747A8.489 8.489 0 0112 2.253m0 0A4.507 4.507 0 0012 2.253v0a4.507 4.507 0 000 15.494v0M3.75 6.253h16.5M3.75 17.747h16.5"></path></svg>
+                    <span>قسم التاريخ (g1)</span></a></li>
+                <li><a href="g2.html" class="flex items-center space-x-3 space-x-reverse p-3 rounded-lg text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-200 transition-all duration-200 group">
+                    <svg class="w-5 h-5 text-emerald-400 group-hover:text-emerald-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 12c0-3.308-2.692-6-6-6s-6 2.692-6 6c0 2.023.996 3.839 2.515 4.985C7.004 18.161 6 19.977 6 22h12c0-2.023-.996-3.839-2.515-4.985C18.004 15.839 19.5 14.023 19.5 12zm-7.5-2.25a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0v-4.5zM12 2.25a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75s.75-.336.75-.75V3a.75.75 0 00-.75-.75z"></path></svg>
+                    <span>قسم العلوم (g2)</span></a></li>
+                <li><a href="g3.html" class="flex items-center space-x-3 space-x-reverse p-3 rounded-lg text-slate-300 hover:bg-amber-500/20 hover:text-amber-200 transition-all duration-200 group">
+                    <svg class="w-5 h-5 text-amber-400 group-hover:text-amber-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v11.494m0 0A8.489 8.489 0 0012 21.747M12 17.747A8.489 8.489 0 0112 2.253m0 0A4.507 4.507 0 0012 2.253v0a4.507 4.507 0 000 15.494v0M3.75 6.253h16.5M3.75 17.747h16.5M2.25 12l3.057-3.057m0 0a4.5 4.5 0 016.364 0L15 12.293M18.75 12l-3.057 3.057m0 0a4.5 4.5 0 01-6.364 0L9 11.707"></path></svg>
+                    <span>قسم الأدب (g3)</span></a></li>
+                 <li><a href="g7.html" class="flex items-center space-x-3 space-x-reverse p-3 rounded-lg text-slate-300 hover:bg-teal-500/20 hover:text-teal-200 transition-all duration-200 group"> <svg class="w-5 h-5 text-teal-400 group-hover:text-teal-300 transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3.75H15.75M15.75 3.75V10.5M15.75 3.75L10.5 10.5M8.25 3.75L3 10.5M8.25 3.75V10.5M3 10.5H6.75M3 10.5L8.25 17.25M6.75 10.5L12 17.25M8.25 10.5L13.5 17.25M10.5 10.5L15.75 17.25M12 17.25H15.75M13.5 17.25L18.75 10.5M15.75 17.25L21 10.5M15.75 10.5H18.75M21 10.5L15.75 3.75"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 17.25V20.25"></path>
+                    </svg>
+                    <span>خارطة طريق لعلم البيانات (g7)</span></a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/60 z-50 opacity-0 pointer-events-none"></div>
+
+
+    <div class="container mx-auto text-center relative z-10">
+        <header class="mb-16 pt-16 md:pt-0"> 
+            <h1 class="text-6xl md:text-8xl font-black hero-title mb-6">المكتبة الرقمية المتألقة</h1>
+            <p class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto">
+                بوابتك إلى عوالم لا نهائية من الإلهام والاكتشاف، مصممة خصيصاً لعشاق المعرفة.
+            </p>
+        </header>
+
+        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
+            <a href="g1.html" class="section-card sky-glow p-8 rounded-2xl">
+                <div class="mb-5 text-center">
+                    <svg class="w-20 h-20 mx-auto text-sky-300 icon-glow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v11.494m0 0A8.489 8.489 0 0012 21.747M12 17.747A8.489 8.489 0 0112 2.253m0 0A4.507 4.507 0 0012 2.253v0a4.507 4.507 0 000 15.494v0M3.75 6.253h16.5M3.75 17.747h16.5"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-sky-200 mb-3 text-center">التاريخ العريق</h2>
+                <p class="text-slate-400 text-center text-sm">استكشف سجلات الماضي وحضاراته الشامخة.</p>
+            </a>
+
+            <a href="g2.html" class="section-card emerald-glow p-8 rounded-2xl">
+                <div class="mb-5 text-center">
+                    <svg class="w-20 h-20 mx-auto text-emerald-300 icon-glow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 12c0-3.308-2.692-6-6-6s-6 2.692-6 6c0 2.023.996 3.839 2.515 4.985C7.004 18.161 6 19.977 6 22h12c0-2.023-.996-3.839-2.515-4.985C18.004 15.839 19.5 14.023 19.5 12zm-7.5-2.25a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0v-4.5zM12 2.25a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75s.75-.336.75-.75V3a.75.75 0 00-.75-.75z"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-emerald-200 mb-3 text-center">علوم المستقبل</h2>
+                <p class="text-slate-400 text-center text-sm">انطلق في رحلة فهم قوانين الكون وتطبيقاتها.</p>
+            </a>
+
+            <a href="g3.html" class="section-card amber-glow p-8 rounded-2xl">
+                <div class="mb-5 text-center">
+                     <svg class="w-20 h-20 mx-auto text-amber-300 icon-glow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v11.494m0 0A8.489 8.489 0 0012 21.747M12 17.747A8.489 8.489 0 0112 2.253m0 0A4.507 4.507 0 0012 2.253v0a4.507 4.507 0 000 15.494v0M3.75 6.253h16.5M3.75 17.747h16.5M2.25 12l3.057-3.057m0 0a4.5 4.5 0 016.364 0L15 12.293M18.75 12l-3.057 3.057m0 0a4.5 4.5 0 01-6.364 0L9 11.707"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-amber-200 mb-3 text-center">روائع الأدب</h2>
+                <p class="text-slate-400 text-center text-sm">تلذذ بجمال الكلمة وسحر القصص الخالدة.</p>
+            </a>
+
+            <a href="g4.html" class="section-card rose-glow p-8 rounded-2xl">
+                <div class="mb-5 text-center">
+                    <svg class="w-20 h-20 mx-auto text-rose-300 icon-glow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 7.5l3 3-3 3M12.75 7.5l3 3-3 3M6 17.25h12M6 20.25h12M17.25 3.75H6.75A2.25 2.25 0 004.5 6v12a2.25 2.25 0 002.25 2.25h10.5A2.25 2.25 0 0019.5 18V6a2.25 2.25 0 00-2.25-2.25z"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-rose-200 mb-3 text-center">إبداعات الفن</h2>
+                <p class="text-slate-400 text-center text-sm">تأمل تجليات الجمال في مختلف أشكاله الفنية.</p>
+            </a>
+
+            <a href="g5.html" class="section-card indigo-glow p-8 rounded-2xl">
+                <div class="mb-5 text-center">
+                    <svg class="w-20 h-20 mx-auto text-indigo-300 icon-glow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V7.5a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 7.5v1.25m18 0A2.25 2.25 0 0018.75 10.5H5.25A2.25 2.25 0 003 8.75m18 0v-2.625c0-.621-.504-1.125-1.125-1.125H18M3 8.75v-2.625C3 5.504 3.504 5 4.125 5H6"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-indigo-200 mb-3 text-center">آفاق التكنولوجيا</h2>
+                <p class="text-slate-400 text-center text-sm">واكب أحدث الابتكارات التي تشكل غدنا.</p>
+            </a>
+            
+            <a href="g6.html" class="section-card pink-glow p-8 rounded-2xl">
+                <div class="mb-5 text-center">
+                    <svg class="w-20 h-20 mx-auto text-pink-300 icon-glow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-pink-200 mb-3 text-center">عالم الصغار</h2>
+                <p class="text-slate-400 text-center text-sm">مغامرات وقصص ملهمة لبراعم المستقبل.</p>
+            </a>
+
+            <a href="g7.html" class="section-card teal-glow p-8 rounded-2xl">
+                <div class="mb-5 text-center">
+                    <svg class="w-20 h-20 mx-auto text-teal-300 icon-glow" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3.75H15.75M15.75 3.75V10.5M15.75 3.75L10.5 10.5M8.25 3.75L3 10.5M8.25 3.75V10.5M3 10.5H6.75M3 10.5L8.25 17.25M6.75 10.5L12 17.25M8.25 10.5L13.5 17.25M10.5 10.5L15.75 17.25M12 17.25H15.75M13.5 17.25L18.75 10.5M15.75 17.25L21 10.5M15.75 10.5H18.75M21 10.5L15.75 3.75"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 17.25V20.25"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-teal-200 mb-3 text-center">خارطة طريق لعلم البيانات</h2>
+                <p class="text-slate-400 text-center text-sm">خطواتك الأولى نحو إتقان تحليل البيانات وبناء النماذج.</p>
+            </a>
+             <div class="hidden xl:block"></div> </main>
+
+        <footer class="mt-20 py-8 text-slate-500 border-t border-slate-700/50">
+            <p class="text-sm">&copy; 2024 المكتبة الرقمية المتألقة. صُمم بشغف وإبداع.</p>
+        </footer>
     </div>
 
-    <div id="pdf-content-area" class="container">
-        <h1>خارطة طريق لتعلم علم البيانات (تفاعلية)</h1>
-        <div class="developer-name">
-            <span>المطور: صابر سعيد</span>
-        </div>
-
-        <div class="section">
-            <button aria-expanded="false" class="section-title-button">
-                <span>المرحلة 0: المتطلبات الأساسية</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
-            <div class="section-content">
-                <ul>
-                    <li>
-                        <span class="list-item-text font-semibold">تعلم لغة برمجة (Python أو R):</span>
-                        <p class="detailed-explanation">
-                            <strong>Python:</strong> اللغة الأكثر شعبية وسهولة مع مكتبات قوية.
-                            <br>
-                            <strong>R:</strong> مصممة للإحصاء وتحليل البيانات، ممتازة في التصور.
-                        </p>
-                    </li>
-                    <li>
-                        <span class="list-item-text font-semibold">فهم الرياضيات الأساسية:</span>
-                        <p class="detailed-explanation">
-                            <strong>الجبر الخطي:</strong> لفهم خوارزميات تعلم الآلة.
-                            <br>
-                            <strong>الإحصاء والاحتمالات:</strong> حجر الزاوية في علم البيانات.
-                            <br>
-                            <strong>حساب التفاضل والتكامل:</strong> لتحسين النماذج.
-                        </p>
-                    </li>
-                    <li>
-                        <span class="list-item-text font-semibold">الأدوات الأساسية:</span>
-                        <p class="detailed-explanation">
-                            <strong>Jupyter Notebooks/Lab:</strong> بيئة تفاعلية للاستكشاف.
-                            <br>
-                            <strong>VS Code:</strong> محرر كود قوي للمشاريع.
-                            <br>
-                            <strong>Anaconda:</strong> لإدارة البيئات والحزم بسهولة.
-                        </p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <button aria-expanded="false" class="section-title-button">
-                <span>المرحلة 1: معالجة وتحليل البيانات الاستكشافي (EDA)</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
-            <div class="section-content">
-                 <ul>
-                    <li>
-                        <span class="list-item-text font-semibold">التعامل مع مكتبات معالجة البيانات:</span>
-                        <p class="detailed-explanation">
-                            <strong>Pandas:</strong> للبيانات الجدولية. <strong>NumPy:</strong> للعمليات العددية.
-                        </p>
-                    </li>
-                    <li>
-                        <span class="list-item-text font-semibold">تنظيف البيانات (Data Cleaning):</span>
-                        <p class="detailed-explanation">
-                            معالجة القيم المفقودة، المكررة، الشاذة، وتصحيح الأخطاء.
-                        </p>
-                    </li>
-                    <li>
-                        <span class="list-item-text font-semibold">التحليل الاستكشافي للبيانات (EDA):</span>
-                         <p class="detailed-explanation">
-                            استخدام الإحصاءات والتصورات لفهم البيانات واكتشاف الأنماط.
-                        </p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <button aria-expanded="false" class="section-title-button">
-                <span>المرحلة 2: تصور البيانات (Data Visualization)</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
-            <div class="section-content">
-                <ul>
-                    <li>
-                        <span class="list-item-text font-semibold">أهمية تصور البيانات:</span>
-                        <p class="detailed-explanation">
-                           تحويل البيانات المعقدة لرسوم سهلة الفهم.
-                        </p>
-                    </li>
-                    <li>
-                        <span class="list-item-text font-semibold">تعلم مكتبات التصور البياني:</span>
-                        <p class="detailed-explanation">
-                            <strong>Matplotlib, Seaborn, Plotly (Python), ggplot2 (R).</strong>
-                        </p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <button aria-expanded="false" class="section-title-button">
-                <span>المرحلة 3: الإحصاء التطبيقي وبناء النماذج</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
-            <div class="section-content">
-                <ul>
-                    <li><span class="list-item-text font-semibold">اختبار الفرضيات</span><p class="detailed-explanation">اتخاذ قرارات بناءً على البيانات.</p></li>
-                    <li><span class="list-item-text font-semibold">تحليل الانحدار</span><p class="detailed-explanation">فهم العلاقات والتنبؤ.</p></li>
-                    <li><span class="list-item-text font-semibold">تحليل الارتباط</span><p class="detailed-explanation">قياس قوة واتجاه العلاقة الخطية.</p></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <button aria-expanded="false" class="section-title-button">
-                <span>المرحلة 4: تعلم الآلة (Machine Learning)</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
-            <div class="section-content">
-                <ul>
-                    <li><span class="list-item-text font-semibold">التعلم المراقب</span><p class="detailed-explanation">تدريب النموذج على بيانات مُصنّفة (الانحدار، التصنيف).</p></li>
-                    <li><span class="list-item-text font-semibold">التعلم غير المراقب</span><p class="detailed-explanation">اكتشاف الأنماط في بيانات غير مُصنّفة (التجميع، تقليل الأبعاد).</p></li>
-                    <li><span class="list-item-text font-semibold">أدوات ومكتبات</span><p class="detailed-explanation">Scikit-learn, TensorFlow, Keras, PyTorch.</p></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <button aria-expanded="false" class="section-title-button">
-                <span>المرحلة 5: المشاريع العملية وتكوين ملف أعمال (Portfolio)</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
-            <div class="section-content">
-                <ul>
-                    <li><span class="list-item-text font-semibold">أهمية المشاريع</span><p class="detailed-explanation">تطبيق المعرفة واكتساب الخبرة.</p></li>
-                    <li><span class="list-item-text font-semibold">منصات للمشاركة</span><p class="detailed-explanation">Kaggle للمسابقات، GitHub لمشاركة الكود وبناء ملف أعمال.</p></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <button aria-expanded="false" class="section-title-button">
-                <span>المرحلة 6: التخصص والتعلم المستمر</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-            </button>
-            <div class="section-content">
-                <ul>
-                    <li><span class="list-item-text font-semibold">اختيار مجال للتخصص</span><p class="detailed-explanation">مثل التعلم العميق، معالجة اللغات، هندسة البيانات.</p></li>
-                    <li><span class="list-item-text font-semibold">التعلم المستمر</span><p class="detailed-explanation">مواكبة التطورات في مجال علم البيانات.</p></li>
-                </ul>
-            </div>
-        </div>
-        
-        <button id="download-pdf-button" class="action-button">
-            📥 تحميل مباشر كـ PDF (يتطلب إعداد المكتبات محلياً للعمل دون اتصال)
-        </button>
-        <button id="print-button" class="action-button no-print" onclick="window.print()">
-            🖨️ طباعة / حفظ كـ PDF (عبر المتصفح - يعمل دون اتصال)
-        </button>
+    <div class="fixed bottom-5 right-5 z-50 pointer-events-none">
+        <p class="presenter-name-animated">مقدم هاذ المطور صابر سعيد</p>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const sectionToggles = document.querySelectorAll('.section-title-button');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-            sectionToggles.forEach(toggle => {
-                toggle.addEventListener('click', function () {
-                    const content = this.nextElementSibling;
-                    const arrow = this.querySelector('.arrow-icon');
-                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        function openSidebar() {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            sidebarOverlay.classList.add('opacity-100');
+            document.body.style.overflow = 'hidden'; 
+        }
 
-                    this.setAttribute('aria-expanded', !isExpanded);
-                    content.classList.toggle('open');
-                    arrow.classList.toggle('rotated');
-                });
-            });
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
+            sidebarOverlay.classList.remove('opacity-100');
+            document.body.style.overflow = ''; 
+        }
 
-            const downloadButton = document.getElementById('download-pdf-button');
-            const pdfContentArea = document.getElementById('pdf-content-area');
-            const loadingOverlay = document.getElementById('loading-overlay');
+        sidebarToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            openSidebar();
+        });
 
-            downloadButton.addEventListener('click', async function () {
-                // التحقق من توفر المكتبات
-                if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-                    // لا تستخدم alert هنا، بل أظهر رسالة مخصصة إذا أردت
-                    console.error("مكتبات إنشاء PDF (jsPDF أو html2canvas) غير متوفرة.");
-                    loadingOverlay.classList.add('hidden'); // إخفاء التراكب إذا كان ظاهرًا
-                    // يمكنك إضافة رسالة خطأ مخصصة تظهر في الصفحة بدلاً من alert
-                    const errorMsg = document.createElement('p');
-                    errorMsg.textContent = "خطأ: مكتبات إنشاء PDF غير محملة. يرجى اتباع التعليمات في بداية الكود لتحميلها محلياً أو التأكد من اتصالك بالإنترنت.";
-                    errorMsg.style.color = 'red';
-                    errorMsg.style.textAlign = 'center';
-                    errorMsg.style.padding = '10px';
-                    pdfContentArea.insertBefore(errorMsg, downloadButton); // عرض الرسالة قبل زر التحميل
-                    setTimeout(() => errorMsg.remove(), 7000); // إزالة الرسالة بعد فترة
-                    return;
-                }
+        sidebarClose.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
 
-                loadingOverlay.classList.remove('hidden');
-                
-                const originalStates = [];
-                sectionToggles.forEach((toggle, index) => {
-                    originalStates[index] = toggle.getAttribute('aria-expanded') === 'true';
-                    if (!originalStates[index]) {
-                        toggle.nextElementSibling.classList.add('open');
-                        // لا نغير aria-expanded أو السهم هنا لأنه مؤقت
-                    }
-                });
-                
-                // انتظار بسيط لانتهاء الأنيميشن إذا كان هناك أي تأثيرات
-                await new Promise(resolve => setTimeout(resolve, 600)); 
-
-
-                try {
-                    const { jsPDF } = window.jspdf; // التأكد من استخدام jsPDF من النطاق العام
-                    const canvas = await html2canvas(pdfContentArea, {
-                        scale: 2,
-                        useCORS: true,
-                        logging: false,
-                        ignoreElements: (element) => {
-                            return element.id === 'download-pdf-button' || element.id === 'print-button' || element.classList.contains('no-print') || element.id === 'loading-overlay';
-                        }
-                    });
-
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF({
-                        orientation: 'p',
-                        unit: 'pt',
-                        format: 'a4'
-                    });
-
-                    const imgProps = pdf.getImageProperties(imgData);
-                    const pdfWidth = pdf.internal.pageSize.getWidth() - 40; // ترك هوامش 20pt من كل جانب
-                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                    
-                    let heightLeft = pdfHeight;
-                    let position = 20; // بدء المحتوى بعد هامش علوي 20pt
-                    const pageHeight = pdf.internal.pageSize.getHeight() - 40; // ارتفاع الصفحة الفعلي مع الهوامش
-
-                    pdf.addImage(imgData, 'PNG', 20, position, pdfWidth, pdfHeight); // 20 هو الهامش الأيسر
-                    heightLeft -= pageHeight;
-
-                    while (heightLeft > 0) { 
-                        position = heightLeft - pdfHeight + 20; 
-                        pdf.addPage();
-                        pdf.addImage(imgData, 'PNG', 20, position, pdfWidth, pdfHeight);
-                        heightLeft -= pageHeight;
-                    }
-                    
-                    pdf.save('خارطة-طريق-علم-البيانات-بواسطة-صابر-سعيد.pdf');
-
-                } catch (error) {
-                    console.error("خطأ أثناء إنشاء PDF:", error);
-                    // يمكنك إضافة رسالة خطأ مخصصة تظهر في الصفحة بدلاً من alert
-                    const errorMsgPdf = document.createElement('p');
-                    errorMsgPdf.textContent = "حدث خطأ أثناء إنشاء ملف PDF. التفاصيل في الكونسول.";
-                    errorMsgPdf.style.color = 'red';
-                    errorMsgPdf.style.textAlign = 'center';
-                    errorMsgPdf.style.padding = '10px';
-                    pdfContentArea.insertBefore(errorMsgPdf, downloadButton);
-                    setTimeout(() => errorMsgPdf.remove(), 7000);
-                } finally {
-                     sectionToggles.forEach((toggle, index) => {
-                        if (!originalStates[index]) { // إذا كان مغلقاً في الأصل
-                            toggle.nextElementSibling.classList.remove('open');
-                        }
-                    });
-                    loadingOverlay.classList.add('hidden');
-                }
-            });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
         });
     </script>
 </body>
